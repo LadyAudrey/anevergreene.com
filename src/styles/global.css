@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: theme('colors.parchment.50');
+    --color-text: theme('colors.moss.800');
+    --color-text-muted: theme('colors.moss.600');
+    --color-accent: theme('colors.moss.600');
+    --color-rule: theme('colors.parchment.200');
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: theme('colors.moss.900');
+      --color-text: theme('colors.parchment.100');
+      --color-text-muted: theme('colors.parchment.200');
+      --color-accent: theme('colors.moss.400');
+      --color-rule: theme('colors.moss.700');
+    }
+  }
+
+  html {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: theme('fontFamily.sans');
+  }
+}

@@ -1,0 +1,219 @@
+---
+import '../styles/global.css';
+import { links, decorativeLeaves } from '../data/links';
+import TreeArt from '../components/TreeArt.astro';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Audrey Evergreene</title>
+    <meta name="description" content="Audrey Evergreene — visionary, builder, connector, artist. On the practice of being human." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Philosopher:ital,wght@0,400;1,400;1,700&display=swap"
+    />
+  </head>
+
+  <body class="min-h-screen bg-sunset">
+    <main class="relative mx-auto w-full max-w-md min-h-screen flex flex-col items-center px-5 sm:px-6 pt-10 sm:pt-14 md:pt-16 pb-0">
+
+      <header class="text-center z-10 w-full">
+        <h1
+          class="font-script font-normal leading-none text-sky-text"
+          style="font-size: clamp(2.25rem, 11vw, 5rem);"
+        >
+          AnEvergreene
+        </h1>
+        <p class="mt-3 font-serif italic text-lg sm:text-xl text-sky-muted tracking-wide">
+          <span class="relative inline-block">
+            <svg
+              class="absolute right-full top-1/2 mr-3 sm:mr-5 w-7 h-5 opacity-40 -translate-y-1/2 -rotate-12"
+              viewBox="-60 -40 120 80"
+              fill="#7a9560"
+              aria-hidden="true"
+            >
+              <path d="M -56,-8 L -22,-22 L 0,-38 L 22,-22 L 56,-8 L 42,10 L 32,32 L 0,22 L -32,32 L -42,10 Z" />
+            </svg>
+            softer, slower, seen
+            <svg
+              class="absolute left-full top-1/2 ml-3 sm:ml-5 w-7 h-5 opacity-40 -translate-y-1/2 rotate-12"
+              viewBox="-60 -40 120 80"
+              fill="#a8c46a"
+              aria-hidden="true"
+            >
+              <path d="M -56,-8 L -22,-22 L 0,-38 L 22,-22 L 56,-8 L 42,10 L 32,32 L 0,22 L -32,32 L -42,10 Z" />
+            </svg>
+          </span>
+        </p>
+        <p class="mt-4 text-[0.65rem] uppercase tracking-widest-2 font-sans font-light text-sky-faint">
+          Audrey Nadia Evergreene
+        </p>
+        <p class="mt-6 mx-auto max-w-sm sm:max-w-md font-serif text-lg sm:text-xl leading-relaxed text-sky-muted" style="text-wrap: pretty;">
+          Being human, exploring what it is to be aware in community — with humans, with AI, with the&nbsp;Universe.
+        </p>
+      </header>
+
+      <!-- Audrey's hand-drawn tree, loaded from art/tree-source.svg at build time -->
+      <svg
+        class="mt-10 w-full flex-1"
+        viewBox="-100 0 600 620"
+        preserveAspectRatio="xMidYMax meet"
+        role="img"
+        aria-label="A maple tree whose branches are links to Audrey's work"
+      >
+        <defs>
+          <!--
+            5-lobed maple leaf:
+              - 1 dominant top peak
+              - 2 prominent side lobes pointing outward (slightly above center)
+              - 2 small lower "afterthought" lobes set inward
+              - Deep upper sinuses, shallower lower sinuses (real maple asymmetry)
+            No petiole — branches act as the stems, more like fascia threading
+            out into the leaves.
+          -->
+          <symbol id="leaf" viewBox="-60 -40 120 80" overflow="visible">
+            <path
+              d="M -56,-8
+                 L -22,-22
+                 L 0,-38
+                 L 22,-22
+                 L 56,-8
+                 L 42,10
+                 L 32,32
+                 L 0,22
+                 L -32,32
+                 L -42,10
+                 Z"
+              fill="currentColor"
+            />
+          </symbol>
+        </defs>
+
+        <TreeArt />
+
+        <!-- Leaves: decorative ones first (so link-leaves render on top) -->
+        <g class="leaves">
+          {decorativeLeaves.map(({ x, y, rotate = 0, scale = 1, color = 'russet', opacity = 0.45 }) => {
+            const w = 120 * scale;
+            const h = 80 * scale;
+            return (
+              <use
+                href="#leaf"
+                x={x - w / 2}
+                y={y - h / 2}
+                width={w}
+                height={h}
+                transform={`rotate(${rotate} ${x} ${y})`}
+                class:list={['decoration-leaf', `color-${color}`]}
+                style={`opacity: ${opacity};`}
+              />
+            );
+          })}
+
+          {links.map(({ label, href, tip, rotate = 0 }) => (
+            <a href={href} class="link-leaf" target="_blank" rel="noopener noreferrer">
+              <use
+                href="#leaf"
+                x={tip.x - 60}
+                y={tip.y - 40}
+                width="120"
+                height="80"
+                transform={`rotate(${rotate} ${tip.x} ${tip.y})`}
+              />
+              <text
+                x={tip.x}
+                y={tip.y}
+                text-anchor="middle"
+                dominant-baseline="central"
+                class="link-label"
+              >
+                {label}
+              </text>
+            </a>
+          ))}
+        </g>
+      </svg>
+
+    </main>
+
+    <style is:global>
+      :root {
+        /* Sunset palette (extends deep dusk further down so most of the canvas reads cool) */
+        --sky-top:    #2f3a44;   /* deep dusk */
+        --sky-mid1:   #57495e;
+        --sky-mid2:   #a8706a;   /* mauve / dusty rose */
+        --sky-low:    #e29770;   /* peach */
+        --sky-horiz:  #efb88e;   /* warm horizon */
+
+        /* Brand color from the business card */
+        --evergreen:   #013c1a;
+        --evergreen-2: #0a5c2c;  /* slightly lifted for hover */
+
+        --tree-stroke: var(--evergreen);
+        --leaf-color:  #1f4a23;  /* deep spring green — passes AAA contrast with parchment text */
+
+        --sky-text:   #f7efe2;   /* warm parchment, sits on dusk */
+        --sky-muted:  #e7d6c3;
+        --sky-faint:  rgba(247, 239, 226, 0.82);
+      }
+
+      .bg-sunset {
+        background-image: linear-gradient(
+          to bottom,
+          var(--sky-top) 0%,
+          var(--sky-mid1) 45%,
+          var(--sky-mid2) 72%,
+          var(--sky-low) 92%,
+          var(--sky-horiz) 100%
+        );
+        background-attachment: fixed;
+      }
+
+      .text-sky-text  { color: var(--sky-text); }
+      .text-sky-muted { color: var(--sky-muted); }
+      .text-sky-faint { color: var(--sky-faint); }
+
+      /* ---------- leaves ----------------------------------------------- */
+
+      /* Spring/summer palette — each decorative leaf can take a color variant */
+      .leaves .decoration-leaf            { color: var(--leaf-color); transition: opacity 400ms ease; }
+      .leaves .decoration-leaf.color-fern   { color: #4a7048; }  /* medium fern green */
+      .leaves .decoration-leaf.color-sage   { color: #7a9560; }  /* light sage */
+      .leaves .decoration-leaf.color-lime   { color: #a8c46a; }  /* yellow-green new growth */
+      .leaves .decoration-leaf.color-olive  { color: #6a7340; }  /* warm olive */
+      .leaves .decoration-leaf.color-moss   { color: #355a3a; }  /* deep mossy green */
+
+      /* Link leaves: clickable buttons with text inside */
+      .leaves .link-leaf {
+        color: var(--leaf-color);
+        cursor: pointer;
+        transform-box: fill-box;
+        transform-origin: center;
+        transition: filter 320ms ease, transform 320ms ease;
+      }
+      .leaves .link-leaf:hover {
+        filter: drop-shadow(0 0 12px rgba(255, 196, 130, 0.85))
+                drop-shadow(0 0 4px rgba(255, 220, 170, 0.6));
+        transform: scale(1.06);
+      }
+
+      .leaves .link-label {
+        font-family: 'Philosopher', Georgia, serif;
+        font-style: italic;
+        font-size: 17px;
+        fill: var(--sky-text);
+        pointer-events: none;
+        user-select: none;
+        transition: fill 220ms ease;
+      }
+      .leaves .link-leaf:hover .link-label {
+        fill: #ffffff;
+      }
+    </style>
+  </body>
+</html>

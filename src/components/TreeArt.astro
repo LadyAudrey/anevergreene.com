@@ -1,0 +1,38 @@
+---
+/**
+ * Renders Audrey's hand-drawn tree from art/tree-source.svg.
+ *
+ * Reads the source SVG at build time and inlines its <defs> (gradients)
+ * and the contents of its "tree" layer into the parent <svg>.
+ *
+ * To update the tree, just re-export from Inkscape over the source file —
+ * the next build (or dev-server refresh) picks it up automatically.
+ */
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const sourcePath = resolve(__dirname, '../../art/tree-source.svg');
+const svg = readFileSync(sourcePath, 'utf-8');
+
+// Pull the <defs> block (gradients + LPE definitions used by the tree)
+const defsMatch = svg.match(/<defs[^>]*>([\s\S]*?)<\/defs>/);
+const defs = defsMatch ? defsMatch[1] : '';
+
+// Pull the contents of the layer whose inkscape:label is "tree"
+const treeMatch = svg.match(
+  /<g[^>]*inkscape:label="tree"[^>]*>([\s\S]*?)<\/g>\s*<\/svg>/
+);
+const tree = treeMatch ? treeMatch[1] : '';
+---
+
+<defs set:html={defs} />
+<g
+  class="tree-art"
+  fill="none"
+  stroke="#013c1a"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  set:html={tree}
+/>
